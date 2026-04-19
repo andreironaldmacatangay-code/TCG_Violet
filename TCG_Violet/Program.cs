@@ -13,7 +13,7 @@ namespace TradingCardGame
     {
         Pyro = 1, Moss, Dew, Flare, Fern,
         Mist, Scorch, Vine, Tide, Cinder,
-        Sprout, Ripple, Blaze, Bloom, Brook, Charizard
+        Sprout, Ripple, Blaze, Bloom, Brook
     }
 
     public interface ICard
