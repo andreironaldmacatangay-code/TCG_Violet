@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -231,16 +231,24 @@ namespace TradingCardGame
                 UI.Menu("[3] Display Binder");
                 UI.Menu("[4] Exit");
 
-                switch (Console.ReadLine())
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    continue;
+                }
+
+                switch (input)
                 {
                     case "1": PullCards(); break;
                     case "2": StartBattle(); break;
                     case "3": DisplayBinder(); break;
                     case "4": SaveBinder("pulls.txt"); return;
+                    default: Console.WriteLine("Invalid option."); break;
                 }
             }
         }
-
         static List<BaseCard> LoadCards(string path)
         {
             var list = new List<BaseCard>();
@@ -249,6 +257,11 @@ namespace TradingCardGame
             {
                 var p = line.Split(',');
 
+                if (p.Length != 7)
+                {
+                    Console.WriteLine($"Invalid type: {line}");
+                    continue;
+                }
                 BaseCard card = p[1].ToUpper() switch
                 {
                     "FIRE" => new FireCard(),
@@ -257,6 +270,11 @@ namespace TradingCardGame
                     _ => null
                 };
 
+                if (card == null)
+                {
+                    Console.WriteLine($"Invalid Type: {line}");
+                    continue;
+                }
                 card.Name = p[0];
                 card.Type = Enum.Parse<CardType>(p[1].ToUpper());
                 card.Rarity = int.Parse(p[2]);
@@ -290,7 +308,6 @@ namespace TradingCardGame
             foreach (var kv in binder)
                 sw.WriteLine($"{kv.Key},{kv.Value}");
         }
-
         static void PullCards()
         {
             UI.Menu("Pulling cards...");
